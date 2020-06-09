@@ -11,7 +11,14 @@ node {
       build 'build-fsd-auth'
    }
    stage('Deploy') {
-      bat script: '''docker run -d -p 8761:8761 waitswallow/fsd-eureka
-        docker run -d -p 2105:2105 waitswallow/fsd-auth'''
+      bat label: '', script: '''set id=
+for /f "usebackq tokens=1" %i in (`docker container ls ^| findstr eureka`) do (set id=%i)
+if not "%id%" == "" docker container kill %id%
+docker run -d -p 8761:8761 --name fsd-eureka waitswallow/fsd-eureka
+
+set id=
+for /f "usebackq tokens=1" %i in (`docker container ls ^| findstr auth`) do (set id=%i)
+if not "%id%" == "" docker container kill %id%
+docker run -d -p 2105:2105 --name fsd-auth waitswallow/fsd-auth'''
    }
 }

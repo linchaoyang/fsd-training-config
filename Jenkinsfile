@@ -23,7 +23,7 @@ node {
             "%MVN_HOME%\\bin\\mvn" -Dmaven.test.skip=true clean package docker:build'''
             
             bat label: '', script: '''cd /d "%WORKSPACE%\\..\\fsd-clone-git\\fsd-back-end\\fsd-auth"
-            "%MVN_HOME%\\bin\\mvn" -Dmaven.test.skip=true clean package docker:build'''
+            "%MVN_HOME%\\bin\\mvn" -Pdocker -Dmaven.test.skip=true clean package docker:build'''
          }
       }
    }
